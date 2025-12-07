@@ -2,21 +2,18 @@ import Logical.Autentikasi;
 import Model.Bus;
 import Model.Customer;
 import Model.User;
-
 import java.util.ArrayList;
 import javax.swing.*;
 
 public class App {
-
-    static ArrayList<Bus> daftarBus = new ArrayList<>();
-
+    public static ArrayList<Bus> daftarBus = new ArrayList<>();
     public static void main(String[] args) {
         daftarBus.add(new Bus("Damri"));
         daftarBus.add(new Bus("Kaleng"));
 
         while (true) {
             String menu = JOptionPane.showInputDialog(
-                    "=== Sistem Login ===\n" +
+                    "Selamat Datang!!\n" +
                     "1. Login\n" +
                     "2. Register\n" +
                     "3. Keluar"
@@ -25,7 +22,7 @@ public class App {
             switch (menu) {
                 case "1":
                     login(); 
-                    return; // <-- berhenti setelah login sukses
+                    return;
                 case "2":
                     register();
                     break;

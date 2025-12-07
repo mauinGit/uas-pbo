@@ -4,14 +4,7 @@ public class Bus {
     private int id;
     private String nama;
     private int totalSeat;
-    private boolean[] seats;  // true = terisi, false = kosong
-
-    public Bus(int id, String nama, int totalSeat) {
-        this.id = id;
-        this.nama = nama;
-        this.totalSeat = totalSeat;
-        this.seats = new boolean[totalSeat]; // default semua false
-    }
+    private boolean[] seats;  
 
     public Bus(String nama) {
         this.nama = nama;

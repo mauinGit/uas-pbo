@@ -1,12 +1,11 @@
 package View;
 
+import Configuration.Config;
 import Model.Bus;
 import Model.Customer;
-import Configuration.Config;
-
-import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
+import javax.swing.*;
 
 public class MilihKursi extends JFrame {
 
@@ -19,25 +18,21 @@ public class MilihKursi extends JFrame {
         this.email = email;
         this.customer = customer;
 
-        // Load kursi yang sudah dibooking dari DB
         loadBookedSeats();
 
         setTitle("Pilih Kursi - " + bus.getNama());
         setSize(450, 700);
-        setLayout(new BorderLayout());
 
-        // PANEL SEAT (grid)
         JPanel seatPanel = new JPanel();
         seatPanel.setLayout(new GridLayout(0, 5, 5, 5));
         add(seatPanel, BorderLayout.CENTER);
 
         generateSeatButtons(seatPanel);
 
-        // PANEL BAWAH: TOMBOL KEMBALI
         JButton backButton = new JButton("Kembali");
         backButton.addActionListener(e -> {
-            dispose();                 // tutup tampilan kursi
-            customer.dashboard();      // kembali ke dashboard customer
+            dispose(); 
+            customer.dashboard();
         });
 
         JPanel bottomPanel = new JPanel();
@@ -52,15 +47,20 @@ public class MilihKursi extends JFrame {
     private void loadBookedSeats() {
         try {
             Connection conn = Config.getConnection();
-            String sql = "SELECT seat_number FROM booking_kursi WHERE bus_id = ?";
+
+            String sql = "SELECT kursi_number FROM booking_kursi WHERE bus_id = ?";
             PreparedStatement pst = conn.prepareStatement(sql);
+
             pst.setInt(1, bus.getId());
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                int seatNum = rs.getInt("seat_number");
+                int seatNum = rs.getInt("kursi_number");
                 bus.isiSeat(seatNum);
             }
+
+            pst.close();
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,6 +93,8 @@ public class MilihKursi extends JFrame {
                 bus.isiSeat(seatNumber);
                 updateSeatInDatabase(seatNumber);
                 updateColor(btn, seatNumber);
+                      
+                showFormDanStruk(seatNumber);       
 
                 JOptionPane.showMessageDialog(this,
                         "Seat " + seatNumber + " berhasil dipesan!");
@@ -129,5 +131,37 @@ public class MilihKursi extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showFormDanStruk(int seatNumber) {
+        String namaPenumpang = JOptionPane.showInputDialog(this,
+                "Masukkan nama penumpang:");
+        if (namaPenumpang == null || namaPenumpang.trim().isEmpty()) return;
+
+        String noHp = JOptionPane.showInputDialog(this,
+                "Masukkan nomor HP:");
+        if (noHp == null || noHp.trim().isEmpty()) return;
+
+        int hargaPerSeat = 0;
+        if (bus.getNama().equalsIgnoreCase("Damri")) {
+            hargaPerSeat = 15000;
+        } else if (bus.getNama().equalsIgnoreCase("Kaleng")) {
+            hargaPerSeat = 10000;
+        }
+
+        int totalBayar = hargaPerSeat;
+
+        String struk =
+                "==============================\n" +
+                "        E-TIKET BUS\n" +
+                "==============================\n" +
+                "Nama Penumpang : " + namaPenumpang + "\n" +
+                "No HP          : " + noHp + "\n" +
+                "Bus            : " + bus.getNama() + "\n" +
+                "Kursi          : " + seatNumber + "\n" +
+                "Total Bayar    : Rp " + totalBayar + "\n" +
+                "==============================";
+
+        JOptionPane.showMessageDialog(this, struk, "STRUK TIKET", JOptionPane.INFORMATION_MESSAGE);
     }
 }

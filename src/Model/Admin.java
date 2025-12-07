@@ -1,13 +1,14 @@
 package Model;
 
-import javax.swing.*;
-import java.sql.*;
 import Configuration.Config;
+import java.sql.*;
+import javax.swing.*;
 
 public class Admin extends User {
 
     public Admin(String email) {
         super(email, "admin");
+        this.email = email;
     }
 
     @Override

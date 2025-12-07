@@ -4,9 +4,8 @@ import Configuration.Config;
 import Model.Admin;
 import Model.Customer;
 import Model.User;
-
-import javax.swing.*;
 import java.sql.*;
+import javax.swing.*;
 
 public class Autentikasi {
 

@@ -1,18 +1,17 @@
 package Model;
 
+import View.MilihKursi;
 import java.util.ArrayList;
 import javax.swing.*;
-
-import View.MilihKursi;
 
 public class Customer extends User {
 
     private ArrayList<Bus> busList;
     private String email;
 
-    public Customer(String username) {
-        super(username, "user");
-        this.email = username;
+    public Customer(String email) {
+        super(email, "user");
+        this.email = email;
     }
 
     public void setBusList(ArrayList<Bus> busList) {
@@ -33,7 +32,7 @@ public class Customer extends User {
         switch (menu) {
             case "1":
                 pilihKursi();
-                break; // SELESAI → tidak kembali ke dashboard
+                break;
 
             case "2":
                 return;
@@ -42,17 +41,6 @@ public class Customer extends User {
                 JOptionPane.showMessageDialog(null, "Pilihan tidak valid");
                 dashboard();
         }
-    }
-
-    private void tampilkanBus() {
-        String info = "";
-        for (int i = 0; i < busList.size(); i++) {
-            Bus b = busList.get(i);
-            info += (i + 1) + ". " + b.getNama() +
-                    " (" + b.getTotalSeat() + " seat)\n";
-        }
-
-        JOptionPane.showMessageDialog(null, info);
     }
 
     private void pilihKursi() { 
@@ -72,3 +60,4 @@ public class Customer extends User {
         new MilihKursi(bus, this.email, this);
     }
 }
+
